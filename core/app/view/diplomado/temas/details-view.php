@@ -12,6 +12,16 @@ if (!$materia) {
 
 // Obtener los temas asociados a la materia
 $temas = TemaData::getByMateriaId($materiaId);
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id'])) {
+    $id = intval($_POST['id']);
+    // Llamada al método para eliminar el tema
+    TemaData::deleteById($id);
+    
+    // Redirige después de eliminar para evitar reenvíos
+    header('Location: ' . $_SERVER['REQUEST_URI']);
+    exit();
+}
 ?>
 
 <!DOCTYPE html>

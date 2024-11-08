@@ -107,5 +107,3 @@ $user_types = UserTypeData::getAll();
     </form>
   </div>
 </div>
-
-como quedaria mi codigo entonces?

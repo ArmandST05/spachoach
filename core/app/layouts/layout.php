@@ -165,14 +165,14 @@ body {
         </ul>
     </li>
 
-    <li class="treeview">
+   <!-- <li class="treeview">
         <a href="#"><i class="fa-solid fa-users" style="color: white;"></i> <span style="color: white;">Alumnos</span> <i class="fa fa-angle-left pull-right" style="color: white;"></i></a>
         <ul class="treeview-menu">
             <li><a href="./?view=alumnos/add" style="color: white;">Agregar alumnos</a></li>
             <li><a href="./?view=alumnos/index" style="color: white;">Lista de alumnos</a></li>
         </ul>
     </li>
-
+  -->
     <li class="treeview">
         <a href="#"><i class="fa-solid fa-book-open-reader" style="color: white;"></i> <span style="color: white;">Contenido temático</span> <i class="fa fa-angle-left pull-right" style="color: white;"></i></a>
         <ul class="treeview-menu">
@@ -302,9 +302,7 @@ $materias = MateriaData::getByModuleId($module->id);
        
         </li>
         
-        <li class="treeview">
-        <a href="./?view=alumnos/add"><i class="fa-solid fa-users" style="color: white;"></i> <span style="color: white;">Registrate</span> </a>
-      </li>
+    
       <li class="treeview">
         <a href="#"><i class="fa-solid fa-book-open-reader" style="color: white;"></i> 
             <span style="color: white;">Diplomado Electroestética</span> 

@@ -46,10 +46,14 @@ class TemaData {
     // Método para eliminar un tema (eliminando su archivo asociado si existe)
     public function delete() {
         // Elimina el archivo asociado si existe
-        if ($this->file_path && file_exists(realpath(dirname(__FILE__)) . '/uploaded_files/' . basename($this->file_path))) {
-            unlink(realpath(dirname(__FILE__)) . '/uploaded_files/' . basename($this->file_path));
+        if ($this->file_path) {
+            $fileFullPath = realpath(dirname(__FILE__)) . '/uploaded_files/' . basename($this->file_path);
+            if (file_exists($fileFullPath)) {
+                unlink($fileFullPath);
+            } else {
+                echo "Archivo no encontrado en la ruta: $fileFullPath";
+            }
         }
-
         // Elimina el registro de la base de datos
         $sql = "DELETE FROM " . self::$tablename . " WHERE id = $this->id";
         Executor::doit($sql);

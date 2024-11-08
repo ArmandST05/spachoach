@@ -110,15 +110,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['id'])) {
         $id = intval($_POST['id']);
 
-        // Crea una instancia del modelo y elimina el registro
-        $tema = new TemaData();
-        $tema->deleteById($id);
+        if ($id > 0) { // Verifica que el ID sea válido
+            // Llama al método estático para eliminar el registro por ID
+            TemaData::deleteById($id);
 
-        // Redirige a la página actual para evitar el reenvío del formulario
-        header('Location: ' . $_SERVER['REQUEST_URI']);
-        exit();
+            // Redirige a la página actual para evitar el reenvío del formulario
+            header('Location: ' . $_SERVER['REQUEST_URI']);
+            exit();
+        } else {
+            echo "ID no válido.";
+        }
     }
 }
+
 // Obtiene todos los temas y materias desde la base de datos
 $temas = TemaData::getAll();
 $materias = MateriaData::getAll();

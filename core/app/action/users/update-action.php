@@ -10,7 +10,7 @@ if(count($_POST)>0){
 	if($_POST["password"]!=""){
 		$user->password = sha1(md5($_POST["password"]));
 		$user->updatePassword();
-		print "<script>alert('Se ha actualizado la contraseña');</script>";
+		print "<script>alert('Se ha actualizado el alumno correctamente');</script>";
 
 	}
 	print "<script>window.location='index.php?view=users/index';</script>";
