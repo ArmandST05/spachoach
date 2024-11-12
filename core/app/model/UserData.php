@@ -8,14 +8,14 @@ class UserData {
 		$this->username = "";
 		$this->email = "";
 		$this->password = "";
-		$this->is_active = "1";
+		$this->is_active = 1;
 		$this->user_type = "";
 		$this->birthdate = "";
 		$this->phone = "";
 		$this->type_contact = "";
 		$this->residence = "";
 		$this->emergency_contact = "";
-		$this->inscription_date = "NOW()";
+		$this->inscription_date = "";
 		$this->created_at = "NOW()";
 		
 	}
