@@ -43,24 +43,40 @@ class TemaData {
         return Model::many($query[0], new TemaData());
     }
 
-    // Método para eliminar un tema (eliminando su archivo asociado si existe)
     public function delete() {
         // Elimina el archivo asociado si existe
         if ($this->file_path && file_exists(realpath(dirname(__FILE__)) . '/uploaded_files/' . basename($this->file_path))) {
             unlink(realpath(dirname(__FILE__)) . '/uploaded_files/' . basename($this->file_path));
         }
-
+    
         // Elimina el registro de la base de datos
         $sql = "DELETE FROM " . self::$tablename . " WHERE id = $this->id";
         Executor::doit($sql);
     }
+    
 
-    // Método estático para eliminar un tema por ID
     public static function deleteById($id) {
-        $tema = self::getById($id);
-        if ($tema) {
-            $tema->delete(); // Llama al método delete que maneja la eliminación del archivo
+        // Obtener la ruta del archivo asociado con el tema
+        $sql = "SELECT file_path FROM ".self::$tablename." WHERE id=$id";
+        $query = Executor::doit($sql);
+        $result = $query[0]->fetch_assoc(); // Obtiene el resultado de la consulta
+    
+        if ($result && !empty($result['file_path'])) {
+            $filePath = $result['file_path'];
+    
+            // Elimina el registro de la base de datos
+            $sql = "DELETE FROM ".self::$tablename." WHERE id=$id";
+            Executor::doit($sql);
+    
+            // Elimina el archivo físico, si existe
+            if (file_exists($filePath)) {
+                unlink($filePath); // Borra el archivo del sistema
+            }
+        } else {
+            // Si no se encontró un archivo o el tema no existe
+            echo "No se encontró el registro o no hay archivo asociado.";
         }
     }
+    
 }
 ?>
