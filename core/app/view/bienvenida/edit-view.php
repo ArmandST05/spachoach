@@ -18,7 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $bienvenida->update();
 
     // Muestra un mensaje de éxito
-    echo "<div class='alert alert-success' role='alert'>Actualización exitosa. <a href='./?view=bienvenida/index' class='btn btn-primary'>Ir a la página de inicio</a></div>";
+    Core::alert("¡Actualizado exitosamente!");
+print "<script>window.location='index.php?view=bienvenida/index';</script>";
 } else {
     $bienvenida = BienvenidaData::getById(1);
 }

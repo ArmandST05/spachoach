@@ -154,7 +154,7 @@ $editMateria = $editId ? MateriaData::getById($editId) : null;
                 <td>
     <a href="?view=diplomado/materias/index&edit=<?php echo $materia->id; ?>" 
        class="btn btn-sm same-height-btn" 
-       style="background-color: #479bd1; color: white;">Editar</a>
+       style="background-color: #479bd1; color: white;"><i class="fa fa-pencil" aria-hidden="true"></i></a>
     
     <!-- Formulario para eliminar una materia -->
     <form action="" method="post" style="display: inline;">

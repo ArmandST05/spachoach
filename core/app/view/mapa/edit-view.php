@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $dest_path = $uploadFileDir . $fileName;
 
             if (move_uploaded_file($fileTmpPath, $dest_path)) {
-                $imagen_path = 'core/app/view/guia/uploaded_images/' . $fileName; // Guarda la ruta relativa del archivo en la base de datos
+                $imagen_path = 'core/app/view/mapa/uploaded_images/' . $fileName; // Guarda la ruta relativa del archivo en la base de datos
             } else {
                 echo 'Ocurrió un error al mover el archivo al directorio de destino.';
             }
@@ -53,8 +53,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $guia->update();
 
     // Muestra un mensaje de éxito
-    echo "<div class='alert alert-black' role='alert'>Actualización exitosa. <a href='./?view=mapa/index' class='btn btn-primary'>Ir a la página de inicio</a></div>";
-} else {
+    Core::alert("¡Actualizado exitosamente!");
+print "<script>window.location='index.php?view=mapa/index';</script>";} else {
     // Obtener los datos de la guía con id = 1
     $guia = GuiaData::getById($id);
 }

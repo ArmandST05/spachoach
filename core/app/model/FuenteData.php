@@ -10,12 +10,12 @@ class FuenteData {
     }
 
 
-    // Método para agregar un nuevo registro
     public function add() {
-        $sql = "INSERT INTO " . self::$tablename . " (titulo, subtitulo, texto, file_path) VALUES ('$titulo', '$subtitulo', '$texto', '$file_path')";
+        // Usar las propiedades de la clase con $this
+        $sql = "INSERT INTO " . self::$tablename . " (titulo, subtitulo, texto, file_path) 
+                VALUES ('$this->titulo', '$this->subtitulo', '$this->texto', '$this->file_path')";
         Executor::doit($sql);
     }
-
     // Método para actualizar un registro existente
     public function update() {
         $sql = "UPDATE " . self::$tablename . " SET titulo='$this->titulo', subtitulo='$this->subtitulo', texto='$this->texto' WHERE id=$this->id";

@@ -69,9 +69,9 @@ $materias = MateriaData::getAll(); // Asegúrate de obtener todas las materias p
                             <button class="btn btn-warning btn-sm editTema" data-id="<?php echo $tema->id; ?>">Editar</button>
                         </a>
 
-                        <a href="index.php?action=temas/delete&id=<?php echo $tema->id; ?>" class="btn btn-danger btn-sm" onClick="return confirmDelete()">
-                            Eliminar
-                        </a>
+                        <button class="btn btn-danger btn-sm" onclick="deleteTema(<?php echo $tema->id; ?>)">
+                             Eliminar
+                        </button>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -103,30 +103,28 @@ $(document).ready(function () {
         });
     });
 });
+function deleteTema(temaId) {
+    const swalWithBootstrapButtons = Swal.mixin({
+        buttonsStyling: true
+    });
 
-$(document).ready(function () {
-    // Event listener para el botón de eliminar
-    $('.deleteTema').click(function () {
-        var temaId = $(this).data('id'); // Obtén el ID del tema a eliminar
-
-        // Confirmación antes de eliminar
-        if (confirm("¿Seguro que deseas eliminar este tema?")) {
-            // Realizar la solicitud AJAX
-            $.ajax({
-                url: './?action=temas/delete', // URL del archivo PHP que maneja la eliminación
-                type: 'POST',
-                data: { id: temaId }, // Enviar el ID del tema a eliminar
-                success: function (response) {
-                    alert(response); // Muestra mensaje de éxito
-                    $('#tema-' + temaId).remove(); // Elimina la fila de la tabla con el ID del tema
-                },
-                error: function () {
-                    alert('Hubo un error al eliminar el tema.');
-                }
-            });
+    swalWithBootstrapButtons.fire({
+        title: '¿Estás seguro de eliminar el tema?',
+        text: "¡No podrás revertirlo!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminarlo',
+        cancelButtonText: '¡No, cancelarlo!',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.value === true) {
+            window.location.href = "index.php?action=temas/delete&id=" + temaId;
         }
     });
-});
+}
+
+
+
 
 
     </script>

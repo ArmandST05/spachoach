@@ -32,7 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $alumno->update();
 
     // Muestra un mensaje de éxito
-    echo "<div class='alert alert-success' role='alert'>Actualización exitosa. <a href='./?view=alumnos/index' class='btn btn-primary'>Ir a la página de inicio</a></div>";
+    print "<script>window.location='index.php?view=alumnos/index';</script>";
+
 } else {
     $id = $_GET['id'];
     $alumno = AlumnoData::getById($id);

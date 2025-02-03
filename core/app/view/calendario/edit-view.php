@@ -53,7 +53,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $calendario->update();
 
     // Muestra un mensaje de éxito
-    echo "<div class='alert alert-success' role='alert'>Actualización exitosa. <a href='./?view=calendario/index' class='btn btn-primary'>Ir a la página de inicio</a></div>";
+    Core::alert("¡Actualizado exitosamente!");
+    print "<script>window.location='index.php?view=calendario/index';</script>";
 } else {
     // Obtener los datos de la guía con id = 1
     $calendario = CalendarioData::getById($id);

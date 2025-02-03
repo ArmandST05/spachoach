@@ -53,7 +53,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $glosario->update();
 
     // Muestra un mensaje de éxito
-    echo "<div class='alert alert-success' role='alert'>Actualización exitosa. <a href='./?view=glosario/index' class='btn btn-primary'>Ir a la página de inicio</a></div>";
+    Core::alert("¡Actualizado exitosamente!");
+    print "<script>window.location='index.php?view=glosario/index';</script>";
 } else {
     // Obtener los datos del glosario con id = 1
     $glosario = GlosarioData::getById($id);

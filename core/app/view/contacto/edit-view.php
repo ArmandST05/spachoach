@@ -32,13 +32,7 @@ $feedback = FeedbackData::getById(1);
             <textarea id="texto" name="texto" class="form-control" rows="10"><?php echo htmlspecialchars($feedback->texto); ?></textarea>
         </div>
 
-        <div class="form-group">
-            <label for="pdf">Archivo PDF:</label>
-            <input type="file" id="pdf" name="pdf" class="form-control">
-            <?php if (!empty($feedback->pdf_path)): ?>
-                <a href="<?php echo htmlspecialchars($feedback->pdf_path); ?>" target="_blank">Ver archivo PDF actual</a>
-            <?php endif; ?>
-        </div>
+        
 
         <button type="submit" class="btn btn-dark">Actualizar</button>
     </form>

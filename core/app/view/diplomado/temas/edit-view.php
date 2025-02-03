@@ -48,7 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
         $tema->update();
     }
 
-    header('Location: ./?view=diplomado/temas/index');
+    Core::alert("¡Actualizado exitosamente!");
+print "<script>window.location='index.php?view=diplomado/temas/index';</script>";
     exit();
 }
 

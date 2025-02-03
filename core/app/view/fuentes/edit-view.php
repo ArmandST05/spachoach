@@ -53,7 +53,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fuente->update();
 
     // Muestra un mensaje de éxito
-    echo "<div class='alert alert-success' role='alert'>Actualización exitosa. <a href='./?view=fuentes/index' class='btn btn-primary'>Ir a la página de inicio</a></div>";
+    Core::alert("¡Actualizado exitosamente!");
+    print "<script>window.location='index.php?view=fuentes  /index';</script>";
 } else {
     // Obtener los datos de la fuente con el ID proporcionado
     $fuente = FuenteData::getById($id);
@@ -89,28 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <textarea id="texto" name="texto" class="form-control" rows="10"><?php echo htmlspecialchars($fuente->texto); ?></textarea>
             </div>
 
-            <div class="form-group">
-                <label for="file_path">Subir Archivo:</label>
-                <input type="file" id="file_path" name="file_path" class="form-control-file" accept=".pdf, .jpg, .jpeg, .png, .gif">
-                
-                <?php if ($fuente->file_path): ?>
-                <div class="mt-2">
-                    <!-- Verificar el tipo de archivo y generar la vista previa -->
-                    <?php
-                    $file_extension = pathinfo($fuente->file_path, PATHINFO_EXTENSION);
-                    if (in_array($file_extension, ['jpg', 'jpeg', 'png', 'gif'])): ?>
-                        <!-- Vista previa de la imagen -->
-                        <img src="<?php echo htmlspecialchars($fuente->file_path); ?>" alt="Vista previa de la imagen" style="max-width: 100%; height: auto;">
-                    <?php elseif ($file_extension === 'pdf'): ?>
-                        <!-- Vista previa del PDF -->
-                        <embed src="<?php echo htmlspecialchars($fuente->file_path); ?>" type="application/pdf" width="100%" height="500px">
-                    <?php else: ?>
-                        <!-- Enlace si el tipo de archivo no es compatible para vista previa -->
-                        <a href="<?php echo htmlspecialchars($fuente->file_path); ?>" target="_blank">Ver archivo actual</a>
-                    <?php endif; ?>
-                </div>
-                <?php endif; ?>
-            </div>
+            
 
             <button type="submit" class="btn" style="background-color: #757575; color:azure">Actualizar</button>
         </form>

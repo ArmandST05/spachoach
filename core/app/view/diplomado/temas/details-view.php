@@ -1,4 +1,21 @@
 <?php
+// Verifica si el usuario está logueado
+if (isset($_SESSION['user_id'])) {
+    // Obtiene el usuario logueado
+    $user = UserData::getLoggedIn();
+    
+    // Verifica si se recuperó el usuario correctamente
+    if ($user) {
+        $get_name = htmlspecialchars($user->name); // Escapa el nombre para evitar XSS
+        $user_type = $user->user_type; // Obtiene el tipo de usuario
+    } else {
+        $get_name = 'Desconocido'; // Valor por defecto si no se encuentra el usuario
+        $user_type = ''; // Valor por defecto si no se encuentra el tipo de usuario
+    }
+} else {
+    $get_name = 'Invitado'; // Valor por defecto si no hay usuario logueado
+    $user_type = ''; // Valor por defecto si no hay usuario logueado
+}   
 // Obtener el ID de la materia desde la URL
 $materiaId = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
@@ -78,12 +95,15 @@ $temas = TemaData::getByMateriaId($materiaId);
                 <?php foreach ($temas as $tema): ?>
                     <div class="col-12 mb-4">
                         <div class="card">
-                            <div class="card-header">
-                                <h2 class="card-title"><?php echo htmlspecialchars($tema->nombre_tema); ?></h2>
-                                <!-- Botón de edición (opcional si se permite editar) -->
+                        <div class="card-header">
+                            <h2 class="card-title"><?php echo htmlspecialchars($tema->nombre_tema); ?></h2>
+
+                            <?php if ($user_type != 'a'): // Solo muestra los botones si el usuario no es alumno ?>
+                                <!-- Botón de edición -->
                                 <button class="btn edit-btn" onclick="window.location.href='./?view=diplomado/temas/edit&id=<?php echo $tema->id; ?>';">
                                     <i class="fa fa-pencil" aria-hidden="true"></i>
                                 </button>
+
                                 <!-- Formulario de eliminación -->
                                 <form action="" method="post" style="display: inline;">
                                     <input type="hidden" name="id" value="<?php echo $tema->id; ?>">
@@ -91,7 +111,9 @@ $temas = TemaData::getByMateriaId($materiaId);
                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                     </button>
                                 </form>
-                            </div>
+                            <?php endif; ?>
+                        </div>
+
                             <div class="card-body">
                                 <h3 class="card-subtitle mb-2 text-muted" style="color: black;"><?php echo htmlspecialchars($tema->descripcion); ?></h3>
 

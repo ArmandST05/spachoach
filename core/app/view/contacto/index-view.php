@@ -108,9 +108,7 @@ $feedbacks = FeedbackData::getAll();
                         <div class="card-body">
                             <h3 class="card-subtitle mb-2 text-muted" style="color: black;"><?php echo htmlspecialchars($feedback->subtitulo); ?></h3>
                             <p class="card-text"><?php echo nl2br(htmlspecialchars($feedback->texto)); ?></p>
-                            <?php if (!empty($feedback->pdf_path)) : ?>
-                                <a href="<?php echo htmlspecialchars($feedback->pdf_path); ?>" target="_blank" class="btn btn-info">Ver PDF</a>
-                            <?php endif; ?>
+                           
                           
                         </div>
                         

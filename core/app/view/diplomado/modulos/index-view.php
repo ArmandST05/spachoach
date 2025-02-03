@@ -58,7 +58,7 @@ $modules = ModuleData::getAll();
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    
                     <th>Nombre del Módulo</th>
                     <th>Materias</th> <!-- Columna para mostrar las materias -->
                     <th>Acciones</th> <!-- Columna para los botones de eliminar -->
@@ -69,7 +69,7 @@ $modules = ModuleData::getAll();
                 <?php if(count($modules) > 0): ?>
                     <?php foreach($modules as $module): ?>
                         <tr>
-                            <td><?php echo $module->id; ?></td>
+                           
                             <td><?php echo $module->nombre_modulo; ?></td>
                             <td>
                                 <?php
@@ -92,6 +92,7 @@ $modules = ModuleData::getAll();
                                 <button type="submit" class="btn delete-btn" style="background-color: #2471a3; color: white;" onclick="return confirm('¿Estás seguro de que deseas eliminar este modulo?');">
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                 </button>
+                                
                             </td>
                         </tr>
                     <?php endforeach; ?>

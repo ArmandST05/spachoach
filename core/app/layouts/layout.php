@@ -311,44 +311,47 @@ $materias = MateriaData::getByModuleId($module->id);
             <i class="fa fa-angle-left pull-right" style="color: white;"></i>
         </a>
         <ul class="treeview-menu">
-           <li class="treeview">
-                <?php if(count($modules) > 0): ?>
-                    <?php foreach($modules as $module): ?>
-                        <a href="#" style="color: white; display: flex; justify-content: space-between; align-items: center;">
-                            <span><?php echo $module->nombre_modulo; ?></span>
-                            <i class="fa fa-angle-left" style="color: white;"></i>
-                        </a>
-                        <ul class="treeview-menu">
-                            <?php 
-                            // Obtener las materias del módulo actual
-                            $materias = MateriaData::getByModuleId($module->id);
-                            ?>
-                            <?php if(count($materias) > 0): ?>
-                                <?php foreach($materias as $materia): ?>
-                                    <li>
-                                        <a href="#" style="color: white;">
-                                            <?php echo $materia->nombre_materia; ?>
-                                        </a>
-                                    </li>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <li>
-                                    <a href="#" style="color: white;">No hay materias disponibles.</a>
-                                </li>
-                            <?php endif; ?>
-                        </ul>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <a href="#" style="color: white;">No hay módulos disponibles.</a>
-                <?php endif; ?>
-            </li>
-        </ul>
+    <li class="treeview">
+        <?php if(count($modules) > 0): ?>
+            <?php foreach($modules as $module): ?>
+                <a href="materias.php?id=<?php echo $module->id; ?>" 
+                   style="color: white; display: flex; justify-content: space-between; align-items: center;">
+                    <span><?php echo $module->nombre_modulo; ?></span>
+                    <i class="fa fa-angle-left" style="color: white;"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <?php 
+                    // Obtener las materias del módulo actual
+                    $materias = MateriaData::getByModuleId($module->id);
+                    ?>
+                    <?php if(count($materias) > 0): ?>
+                        <?php foreach($materias as $materia): ?>
+                            <li>
+                                <a href="./?view=diplomado/materias/materias-alumno&id=<?php echo $materia->id; ?>" style="color: white;">
+                                    <?php echo $materia->nombre_materia; ?>
+                                </a>
+
+                            </li>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <li>
+                            <a href="#" style="color: white;">No hay materias disponibles.</a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <a href="#" style="color: white;">No hay módulos disponibles.</a>
+        <?php endif; ?>
+    </li>
+</ul>
+
     </li>
       <li class="treeview">
         <a href="#"><i class="fa-solid fa-book-open-reader" style="color: white;"></i> <span style="color: white;">Contenido temático</span> <i class="fa fa-angle-left pull-right" style="color: white;"></i></a>
         <ul class="treeview-menu">
             <li><a href="./?view=temario/index" style="color: white;">Temario</a></li>
-            <li><a href="./?view=guia/index" style="color: white;">Mapa de sitio</a></li>
+            <li><a href="./?view=mapa/index" style="color: white;">Mapa de sitio</a></li>
             <li><a href="./?view=evaluacion/index" style="color: white;">Forma de evaluación</a></li>
             <li><a href="./?view=glosario/index" style="color: white;">Glosario</a></li>
             <li><a href="./?view=fuentes/index" style="color: white;">Fuentes</a></li>
@@ -356,7 +359,7 @@ $materias = MateriaData::getByModuleId($module->id);
     </li>
         
         <li class="treeview">
-        <a href="./?view=guia/index"><i class='fa-solid fa-list-check' style="color: white;"></i> <span style="color: white;">Guía Visual del Curso</span> </a>
+        <a href="./?view=mapa/index"><i class='fa-solid fa-list-check' style="color: white;"></i> <span style="color: white;">Guía Visual del Curso</span> </a>
         
         </li>
         
