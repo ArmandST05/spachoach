@@ -55,8 +55,12 @@ $modulos = ModuleData::getAll(); // Asume que tienes un método similar para obt
                         foreach ($temas as $tema):
                         ?>
                             <div class="tema">
-                                <h4><a href="./?view=diplomado/temas/details&id=<?php echo urlencode($tema->id); ?>"><?php echo htmlspecialchars($tema->nombre_tema); ?></a></h4>
-                                
+                            <h4>
+                                <a href="./?view=diplomado/temas/details&id=<?php echo urlencode($materia->id); ?>&tema=<?php echo urlencode($tema->id); ?>">
+                                    <?php echo htmlspecialchars($tema->nombre_tema); ?>
+                                </a>
+                            </h4>
+                                                            
                             </div>
                         <?php endforeach; ?>
                         

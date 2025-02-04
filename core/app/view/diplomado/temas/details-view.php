@@ -1,29 +1,37 @@
 <?php
+
 // Verifica si el usuario está logueado
+$get_name = 'Invitado'; // Valor por defecto
+$user_type = ''; 
+
 if (isset($_SESSION['user_id'])) {
-    // Obtiene el usuario logueado
     $user = UserData::getLoggedIn();
-    
-    // Verifica si se recuperó el usuario correctamente
     if ($user) {
-        $get_name = htmlspecialchars($user->name); // Escapa el nombre para evitar XSS
-        $user_type = $user->user_type; // Obtiene el tipo de usuario
-    } else {
-        $get_name = 'Desconocido'; // Valor por defecto si no se encuentra el usuario
-        $user_type = ''; // Valor por defecto si no se encuentra el tipo de usuario
+        $get_name = htmlspecialchars($user->name); 
+        $user_type = $user->user_type;
     }
-} else {
-    $get_name = 'Invitado'; // Valor por defecto si no hay usuario logueado
-    $user_type = ''; // Valor por defecto si no hay usuario logueado
-}   
+}
+
+
+
 // Obtener el ID de la materia desde la URL
 $materiaId = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Obtener la información de la materia
-$materia = MateriaData::getById($materiaId);
+// Si el ID parece ser de un tema, buscar la materia correspondiente
+if ($materiaId > 0) {
+    $materia = MateriaData::getById($materiaId);
+} elseif (isset($_GET['tema_id'])) {
+    $tema = TemaData::getById(intval($_GET['tema_id']));
+    if ($tema) {
+        $materiaId = $tema->materia_id;
+        $materia = MateriaData::getById($materiaId);
+    }
+} else {
+    $materia = null;
+}
 
 if (!$materia) {
-    echo "Materia no encontrada.";
+    echo "⚠️ Materia no encontrada.";
     exit();
 }
 
@@ -37,82 +45,41 @@ $temas = TemaData::getByMateriaId($materiaId);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Temas de la Materia: <?php echo htmlspecialchars($materia->nombre_materia); ?></title>
-    <!-- Bootstrap CSS -->
     <style>
-        .card {
-            border-radius: 8px;
-            background-color: #808b96; 
-            color: #fff;
-            margin-bottom: 20px;
-        }
-        .card-header {
-            position: relative;
-            padding: 15px;
-        }
-        .card-body {
-            padding: 15px;
-        }
-        .card-header .edit-btn,
-        .card-header .delete-btn {
-            position: absolute;
-            top: 10px;
-            font-size: 18px;
-        }
-        .card-header .edit-btn {
-            right: 80px;
-            background-color: #5499c7;
-        }
-        .card-header .delete-btn {
-            right: 30px;
-            background-color: #2471a3;
-        }
-        .card-title, .card-subtitle, .card-text {
-            margin-bottom: 15px;
-        }
-        .video-container {
-            display: flex;
-            justify-content: center;
-        }
-        .video-item {
-            width: 100%;
-            max-width: 750px;
-        }
-        .imgs {
-    height: 100%; /* Altura fija */
-    width: 100%; /* Ajusta el ancho para mantener proporciones */
-    object-fit: cover; /* Ajusta la imagen para que cubra el espacio, manteniendo el aspecto */
-} body {
-    zoom: 0.90;
-}
-  </style>
+        .card { border-radius: 8px; background-color: #808b96; color: #fff; margin-bottom: 20px; }
+        .card-header { position: relative; padding: 15px; }
+        .card-body { padding: 15px; }
+        .edit-btn, .delete-btn { position: absolute; top: 10px; font-size: 18px; }
+        .edit-btn { right: 80px; background-color: #5499c7; }
+        .delete-btn { right: 30px; background-color: #2471a3; }
+        .imgs { height: 100%; width: 100%; object-fit: cover; }
+        body { zoom: 0.90; }
+    </style>
 </head>
 <body>
     <div class="container mt-5">
         <h1 class="text-center">Temas de la Materia: <?php echo htmlspecialchars($materia->nombre_materia); ?></h1>
-        
-        <?php if (count($temas) > 0): ?>
+
+        <?php if (!empty($temas)): ?>
             <div class="row">
                 <?php foreach ($temas as $tema): ?>
                     <div class="col-12 mb-4">
                         <div class="card">
-                        <div class="card-header">
-                            <h2 class="card-title"><?php echo htmlspecialchars($tema->nombre_tema); ?></h2>
+                            <div class="card-header">
+                                <h2 class="card-title"><?php echo htmlspecialchars($tema->nombre_tema); ?></h2>
 
-                            <?php if ($user_type != 'a'): // Solo muestra los botones si el usuario no es alumno ?>
-                                <!-- Botón de edición -->
-                                <button class="btn edit-btn" onclick="window.location.href='./?view=diplomado/temas/edit&id=<?php echo $tema->id; ?>';">
-                                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                                </button>
-
-                                <!-- Formulario de eliminación -->
-                                <form action="" method="post" style="display: inline;">
-                                    <input type="hidden" name="id" value="<?php echo $tema->id; ?>">
-                                    <button type="submit" class="btn delete-btn" onclick="return confirm('¿Estás seguro de que deseas eliminar este tema?');">
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                <?php if ($user_type != 'a'): // Solo si el usuario no es alumno ?>
+                                    <button class="btn edit-btn" onclick="window.location.href='./?view=diplomado/temas/edit&id=<?php echo $tema->id; ?>';">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i>
                                     </button>
-                                </form>
-                            <?php endif; ?>
-                        </div>
+                                    <form action="" method="post" style="display: inline;">
+                                        <input type="hidden" name="id" value="<?php echo $tema->id; ?>">
+                                        <button type="button" class="btn delete-btn" onclick="deleteTema(<?php echo $tema->id; ?>)">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
+                                <?php endif; ?>
+                            </div>
 
                             <div class="card-body">
                                 <h3 class="card-subtitle mb-2 text-muted" style="color: black;"><?php echo htmlspecialchars($tema->descripcion); ?></h3>
@@ -120,24 +87,22 @@ $temas = TemaData::getByMateriaId($materiaId);
                                 <?php if ($tema->file_path): ?>
                                     <div class="mt-4">
                                         <h6>Vista Previa del Archivo:</h6>
-                                        <?php
+                                        <?php 
                                         $fileExtension = strtolower(pathinfo($tema->file_path, PATHINFO_EXTENSION));
-                                        ?>
-                                        <?php if (in_array($fileExtension, ['jpg', 'jpeg', 'png'])): ?>
-                                            <img class="imgs" width="100%" src="<?php echo htmlspecialchars($tema->file_path); ?>" class="img-fluid" alt="Vista previa del archivo" style=" object-fit: cover;">
-                                        <?php elseif (in_array($fileExtension, ['pdf'])): ?>
-                                            <embed   src="<?php echo htmlspecialchars($tema->file_path); ?>" type="application/pdf" width="100%" height="600px">
+                                        if (in_array($fileExtension, ['jpg', 'jpeg', 'png'])): ?>
+                                            <img class="imgs" src="<?php echo htmlspecialchars($tema->file_path); ?>" alt="Vista previa">
+                                        <?php elseif ($fileExtension === 'pdf'): ?>
+                                            <embed src="<?php echo htmlspecialchars($tema->file_path); ?>" type="application/pdf" width="100%" height="600px">
                                         <?php elseif (in_array($fileExtension, ['mp4', 'avi', 'mkv'])): ?>
                                             <div class="video-container">
                                                 <div class="video-item">
                                                     <video width="100%" height="600px" controls>
                                                         <source src="<?php echo htmlspecialchars($tema->file_path); ?>" type="video/<?php echo $fileExtension; ?>">
-                                                        Tu navegador no soporta la etiqueta de video.
                                                     </video>
                                                 </div>
                                             </div>
                                         <?php else: ?>
-                                            <p>Vista previa no disponible para este tipo de archivo.</p>
+                                            <p>Vista previa no disponible.</p>
                                         <?php endif; ?>
                                     </div>
                                 <?php endif; ?>
@@ -147,13 +112,30 @@ $temas = TemaData::getByMateriaId($materiaId);
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <p>No hay temas disponibles para esta materia.</p>
+            <p>No hay temas disponibles.</p>
         <?php endif; ?>
-        
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-
 </body>
+<script>
+function deleteTema(temaId) {
+    const swalWithBootstrapButtons = Swal.mixin({
+        buttonsStyling: true
+    });
+
+    swalWithBootstrapButtons.fire({
+        title: '¿Estás seguro de eliminar el tema?',
+        text: "¡No podrás revertirlo!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminarlo',
+        cancelButtonText: '¡No, cancelarlo!',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.value === true) {
+            window.location.href = "index.php?action=temas/delete-by-details&id=" + temaId;
+        }
+    });
+}
+
+</script>
 </html>

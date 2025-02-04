@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Muestra un mensaje de éxito
     Core::alert("¡Actualizado exitosamente!");
-    print "<script>window.location='index.php?view=fuentes  /index';</script>";
+    print "<script>window.location='index.php?view=fuentes/index';</script>";
 } else {
     // Obtener los datos de la fuente con el ID proporcionado
     $fuente = FuenteData::getById($id);

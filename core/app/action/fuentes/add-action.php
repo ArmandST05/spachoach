@@ -45,8 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $fuentes->add(); // Inserta los datos en la base de datos
 
-        // Puedes redirigir a una página de éxito o recargar la página
-        echo 'Datos agregados correctamente.';
+        Core::alert("¡Agregado exitosamente!");
+    print "<script>window.location='index.php?view=fuentes/index';</script>";
     } else {
         echo 'Error: Faltan campos obligatorios en el formulario.';
     }
