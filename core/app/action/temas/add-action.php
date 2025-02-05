@@ -5,7 +5,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Obtener los datos del formulario
     $nombre_tema = $_POST['nombre_tema'];
     $id_materia = $_POST['id_materia'];
-    $descripcion = $_POST['descripcion'];
+    $descripcion = nl2br($_POST['descripcion']); // Respetar los saltos de línea
+    $link = isset($_POST['link']) ? $_POST['link'] : null;
     $file_path = ''; // Inicializamos el file_path vacío
 
     // Directorio donde se guardarán los archivos subidos
@@ -22,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $fileExtension = strtolower(end($fileNameCmps));
 
         // Validar la extensión del archivo (tipos permitidos)
-        $allowedExtensions = array('jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'xls', 'xlsx'); // Extensiones permitidas
+        $allowedExtensions = array('jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'xls', 'xlsx');
         if (in_array($fileExtension, $allowedExtensions)) {
             $dest_path = $uploadFileDir . $fileName; // Establecemos la ruta de destino
 
@@ -36,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     } else {
         // Si no se subió un nuevo archivo, conserva la ruta del archivo existente
-        $file_path = ''; // Si no hay archivo nuevo, dejamos vacío (puedes modificar esto si hay lógica para mantener el archivo previo)
+        $file_path = ''; // Si no hay archivo nuevo, dejamos vacío
     }
 
     // Crear la instancia del modelo de Tema
@@ -45,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $tema->id_materia = $id_materia;
     $tema->descripcion = $descripcion;
     $tema->file_path = $file_path;
+    $tema->link = $link; // Guardar el enlace en la base de datos
 
     // Guardar los datos en la base de datos
     $id = $tema->add(); // Método que guarda el nuevo tema y devuelve el ID generado
@@ -57,7 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             "nombre_tema" => $nombre_tema,
             "descripcion" => $descripcion,
             "nombre_materia" => $materia->nombre_materia ?? "Desconocida",
-            "file_path" => $file_path // Retorna también la ruta del archivo
+            "file_path" => $file_path, // Retorna también la ruta del archivo
+            "link" => $link
         ];
     } else {
         $response["message"] = "No se pudo guardar el tema.";

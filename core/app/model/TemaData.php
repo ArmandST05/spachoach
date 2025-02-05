@@ -6,13 +6,14 @@ class TemaData {
         $this->nombre_tema = "";
         $this->descripcion = "";
         $this->id_materia = 0;
-        $this->file_path = "";  // Inicializar file_path como una cadena vacía
+        $this->file_path = ""; // Inicializar file_path como cadena vacía
+        $this->link = ""; // Inicializar link como cadena vacía
     }
 
     // Método para agregar un nuevo tema
     public function add() {
-        $sql = "INSERT INTO " . self::$tablename . " (nombre_tema, descripcion, id_materia, file_path) ";
-        $sql .= "VALUES (\"$this->nombre_tema\", \"$this->descripcion\", \"$this->id_materia\", \"$this->file_path\")";
+        $sql = "INSERT INTO " . self::$tablename . " (nombre_tema, descripcion, id_materia, file_path, link) ";
+        $sql .= "VALUES (\"$this->nombre_tema\", \"$this->descripcion\", \"$this->id_materia\", \"$this->file_path\", \"$this->link\")";
         Executor::doit($sql);
     }
 
