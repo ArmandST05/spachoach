@@ -10,12 +10,16 @@ class TemaData {
         $this->link = ""; // Inicializar link como cadena vacía
     }
 
-    // Método para agregar un nuevo tema
     public function add() {
         $sql = "INSERT INTO " . self::$tablename . " (nombre_tema, descripcion, id_materia, file_path, link) ";
-        $sql .= "VALUES (\"$this->nombre_tema\", \"$this->descripcion\", \"$this->id_materia\", \"$this->file_path\", \"$this->link\")";
-        Executor::doit($sql);
+        $sql .= "VALUES ('$this->nombre_tema', '$this->descripcion', '$this->id_materia', '$this->file_path', '$this->link')";
+        
+        $result = Executor::doit($sql); // Ejecutar la consulta
+    
+        return $result ? true : false; // Devolver true si se ejecutó correctamente
     }
+    
+
 
     // Método para actualizar un tema existente
     public function update() {

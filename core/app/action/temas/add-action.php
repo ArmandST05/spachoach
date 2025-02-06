@@ -5,7 +5,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Obtener los datos del formulario
     $nombre_tema = $_POST['nombre_tema'];
     $id_materia = $_POST['id_materia'];
-    $descripcion = nl2br($_POST['descripcion']); // Respetar los saltos de línea
+    $descripcion = trim($_POST['descripcion']); // Quita espacios innecesarios y respeta los saltos de línea
     $link = isset($_POST['link']) ? $_POST['link'] : null;
     $file_path = ''; // Inicializamos el file_path vacío
 
