@@ -379,9 +379,7 @@ $materias = MateriaData::getByModuleId($module->id);
         <a href="./?view=contacto/index"><i class="fa-solid fa-address-book"  style="color: white;"> </i> <span style="color: white;">Contacto</span></a>
     </li>
        
-         <li class="treeview">
-         <a href="./?view=perfil_usuario/index"><i class="fa-solid fa-user" style="color: white;"></i> <span style="color: white;">Perfil</span></a>
-      </li>
+         
          <ul class="treeview-menu">
        
           <?php endif; ?>

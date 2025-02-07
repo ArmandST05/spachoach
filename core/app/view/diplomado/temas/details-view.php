@@ -83,6 +83,11 @@ $temas = TemaData::getByMateriaId($materiaId);
 
                             <div class="card-body">
                                 <h3 class="card-subtitle mb-2 text-muted" style="color: black;"><?php echo htmlspecialchars($tema->descripcion); ?></h3>
+                                <h3 class="card-subtitle mb-2 text-muted">
+    <a href="<?php echo htmlspecialchars($tema->link); ?>" target="_blank" style="color: black;">
+        <?php echo htmlspecialchars($tema->link); ?>
+    </a>
+</h3>
 
                                 <?php if ($tema->file_path): ?>
                                     <div class="mt-4">
