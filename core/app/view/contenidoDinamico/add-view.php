@@ -1,14 +1,24 @@
 <?php
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Obtén los datos del formulario
     $titulo = $_POST['titulo'];
     $subtitulo = $_POST['subtitulo'];
     $texto = $_POST['texto'];
-    $fecha_inicio = $_POST['fecha_inicio']; // Fecha de inicio de visualización
-    $fecha_fin = $_POST['fecha_fin']; // Fecha de fin de visualización
-    $contenido_activo = 1; // Por defecto el contenido estará visible (1 = visible, 2 = oculto)
+    $fecha_inicio = $_POST['fecha_inicio'];
+    $fecha_fin = $_POST['fecha_fin'];
+    $contenido_activo = 1;
     $video_path = '';
+
+    // Validaciones de las fechas en el backend
+    if (empty($fecha_inicio) || $fecha_inicio == '0000-00-00') {
+        die('Error: La fecha de inicio no puede estar vacía ni ser 0.');
+    }
+    if (empty($fecha_fin) || $fecha_fin == '0000-00-00') {
+        die('Error: La fecha de fin no puede estar vacía ni ser 0.');
+    }
+    if ($fecha_inicio > $fecha_fin) {
+        die('Error: La fecha de inicio no puede ser mayor que la fecha de fin.');
+    }
 
     // Directorio donde se guardarán los archivos subidos
     $uploadFileDir = realpath(dirname(__FILE__)) . '/uploaded_videos/';
@@ -29,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $dest_path = $uploadFileDir . $fileName;
 
             if (move_uploaded_file($fileTmpPath, $dest_path)) {
-                $video_path = 'core/app/view/contenidoDinamico/uploaded_videos/' . $fileName; // Guarda la ruta relativa del archivo en la base de datos
+                $video_path = 'core/app/view/contenidoDinamico/uploaded_videos/' . $fileName;
             } else {
                 echo 'Error al mover el archivo: ' . error_get_last()['message'];
             }
@@ -45,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $contenido_dinamico->texto = $texto;
     $contenido_dinamico->fecha_inicio = $fecha_inicio;
     $contenido_dinamico->fecha_fin = $fecha_fin;
-    $contenido_dinamico->contenido_activo = $contenido_activo; // Guardamos el estado inicial
+    $contenido_dinamico->contenido_activo = $contenido_activo;
     $contenido_dinamico->video_path = $video_path;
 
     // Agrega el registro a la base de datos
@@ -63,7 +73,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agregar Contenido Dinámico</title>
-    <!-- Enlace a los estilos de Bootstrap -->
     <style>
         #progress-container {
             width: 100%;
@@ -80,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <div class="container mt-5">
         <h1 class="mb-4">Agregar Contenido Dinámico</h1>
-        <form id="upload-form" action="" method="post" enctype="multipart/form-data">
+        <form id="upload-form" action="" method="post" enctype="multipart/form-data" onsubmit="return validarFormulario()">
             <div class="form-group">
                 <label for="titulo">Título:</label>
                 <textarea id="titulo" name="titulo" class="form-control" rows="2" required></textarea>
@@ -120,13 +129,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
     <script>
-   
+        document.addEventListener("DOMContentLoaded", function () {
+            // Establece la fecha de inicio con el día actual
+            let fechaActual = new Date().toISOString().split('T')[0];
+            document.getElementById('fecha_inicio').value = fechaActual;
+        });
+
+        function validarFormulario() {
+            let fechaInicio = document.getElementById('fecha_inicio').value;
+            let fechaFin = document.getElementById('fecha_fin').value;
+
+            if (!fechaInicio || fechaInicio === '0000-00-00') {
+                alert("La fecha de inicio no puede estar vacía ni ser 0.");
+                return false;
+            }
+            if (!fechaFin || fechaFin === '0000-00-00') {
+                alert("La fecha de fin no puede estar vacía ni ser 0.");
+                return false;
+            }
+            if (fechaInicio > fechaFin) {
+                alert("La fecha de inicio no puede ser mayor que la fecha de fin.");
+                return false;
+            }
+            return true;
+        }
     </script>
 </body>
 </html>
